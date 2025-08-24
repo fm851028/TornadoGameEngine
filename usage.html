@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TornadoGameEngine - Java 2D游戏引擎</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .toc {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .toc h2 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        .toc ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .toc li {
+            margin: 0.5rem 0;
+        }
+        .toc a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        section {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 0.5rem;
+        }
+        h3 {
+            color: #3498db;
+        }
+        .code-block {
+            background-color: #f8f8f8;
+            border-radius: 4px;
+            padding: 1rem;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .module {
+            margin-bottom: 1.5rem;
+            padding-left: 1rem;
+            border-left: 3px solid #3498db;
+        }
+        .security-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        .security-table th, .security-table td {
+            border: 1px solid #ddd;
+            padding: 0.8rem;
+            text-align: left;
+        }
+        .security-table th {
+            background-color: #f2f2f2;
+        }
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>TornadoGameEngine</h1>
+        <p>轻量级Java 2D游戏引擎框架</p>
+    </header>
+    
+    <div class="container">
+        <div class="toc">
+            <h2>目录</h2>
+            <ul>
+                <li><a href="#overview">项目概述</a></li>
+                <li><a href="#structure">项目结构</a></li>
+                <li><a href="#core-modules">核心功能模块</a></li>
+                <li><a href="#quick-start">快速开始</a></li>
+                <li><a href="#security">安全策略</a></li>
+                <li><a href="#dev-env">开发环境</a></li>
+            </ul>
+        </div>
+
+        <section id="overview">
+            <h2>项目概述</h2>
+            <p>TornadoGameEngine是一个轻量级的Java 2D游戏引擎框架，提供了游戏开发所需的核心组件，包括窗口管理、输入处理、物理模拟、渲染系统、资源管理和UI组件等。该引擎设计简洁，易于理解和扩展，适合用于开发2D小游戏或作为学习游戏引擎原理的示例项目。</p>
+            <p>引擎采用面向对象设计，使用单例模式管理全局资源（如物理系统、声音管理器），通过抽象类和接口提供扩展灵活性，使开发者能够专注于游戏逻辑的实现。</p>
+        </section>
+
+        <section id="structure">
+            <h2>项目结构</h2>
+            <p>项目的核心代码位于<code>src/net/pandaorg/tornadoengine/</code>目录下，按功能划分为多个模块：</p>
+            <ul>
+                <li><code>core/</code> - 核心游戏逻辑，包括游戏主类、游戏对象和窗口管理</li>
+                <li><code>graphics/</code> - 渲染系统，处理2D图形绘制</li>
+                <li><code>physics/</code> - 物理引擎，处理碰撞检测和物理模拟</li>
+                <li><code>math/</code> - 数学工具类，提供向量、矩阵等计算支持</li>
+                <li><code>config/</code> - 配置管理，处理游戏配置的加载和保存</li>
+                <li><code>ui/</code> - UI组件，包括按钮等交互元素</li>
+                <li><code>sound/</code> - 声音管理，处理游戏音效的加载和播放</li>
+                <li><code>events/</code> - 事件系统，处理输入和其他事件</li>
+            </ul>
+            <p>此外，项目还包含：</p>
+            <ul>
+                <li><code>.idea/</code> - IntelliJ IDEA项目配置文件</li>
+                <li><code>.gitignore</code> - Git版本控制忽略文件</li>
+                <li><code>SECURITY.md</code> - 安全策略文档</li>
+            </ul>
+        </section>
+
+        <section id="core-modules">
+            <h2>核心功能模块</h2>
+
+            <div class="module">
+                <h3>核心游戏逻辑（core/）</h3>
+                <p>核心模块包含游戏运行的基础组件：</p>
+                <ul>
+                    <li><strong>Game类</strong> - 游戏主逻辑入口，包含游戏初始化、主循环（更新与渲染）、对象管理等核心逻辑，支持固定时间步长更新物理和渲染。</li>
+                    <li><strong>GameObject类</strong> - 所有游戏对象的基类，包含位置、尺寸、可见性等属性，定义了渲染（render）和更新（update）方法的抽象接口。</li>
+                    <li><strong>GameWindow类</strong> - 游戏窗口管理，负责创建窗口、处理输入（键盘、鼠标事件）、管理渲染缓冲等。</li>
+                </ul>
+            </div>
+
+            <div class="module">
+                <h3>渲染系统（graphics/）</h3>
+                <p>渲染系统负责所有图形的绘制工作：</p>
+                <ul>
+                    <li><strong>Renderer接口</strong> - 定义渲染操作的标准方法，包括绘制矩形、图像、文本、线段等，以及屏幕清除和渲染提交。</li>
+                    <li><strong>DefaultRenderer类</strong> - Renderer接口的默认实现，基于Java 2D图形库（Graphics2D）实现具体渲染功能。</li>
+                </ul>
+                <p>支持的渲染功能：</p>
+                <ul>
+                    <li>绘制和填充矩形</li>
+                    <li>绘制图像（支持缩放）</li>
+                    <li>绘制文本（支持自定义字体和颜色）</li>
+                    <li>绘制线段（支持自定义线宽）</li>
+                    <li>屏幕清除</li>
+                </ul>
+            </div>
+
+            <div class="module">
+                <h3>物理系统（physics/）</h3>
+                <p>物理系统处理游戏中的物理模拟和碰撞检测：</p>
+                <ul>
+                    <li><strong>PhysicsSystem类</strong> - 物理引擎核心，单例模式，处理重力、碰撞检测和物理状态更新。</li>
+                    <li><strong>PhysicsObject接口</strong> - 定义物理对象的属性（质量、速度、加速度）和行为（受力、状态更新）。</li>
+                    <li><strong>CollisionObject接口</strong> - 定义碰撞相关方法，包括碰撞箱获取和碰撞检测。</li>
+                </ul>
+                <p>物理系统特性：</p>
+                <ul>
+                    <li>支持重力模拟（可开关）</li>
+                    <li>AABB（轴对齐 bounding box）碰撞检测</li>
+                    <li>力和加速度计算</li>
+                    <li>物理状态更新（速度、位置等）</li>
+                </ul>
+            </div>
+
+            <div class="module">
+                <h3>数学工具（math/）</h3>
+                <p>提供游戏开发中常用的数学计算工具：</p>
+                <ul>
+                    <li><strong>Vector2f类</strong> - 2D向量，支持基本的向量运算。</li>
+                    <li><strong>Matrix2f类</strong> - 2x2矩阵，主要用于旋转等变换。</li>
+                    <li><strong>Rectangle类</strong> - 矩形类，用于表示位置和尺寸，支持碰撞检测。</li>
+                </ul>
+            </div>
+
+            <div class="module">
+                <h3>配置管理（config/）</h3>
+                <p><strong>ConfigManager类</strong> - 单例模式管理配置文件（.properties格式），支持多种数据类型的配置读写：</p>
+                <ul>
+                    <li>字符串、整数、浮点数、布尔值等类型的读写</li>
+                    <li>自动创建配置目录</li>
+                    <li>支持多个配置文件的管理</li>
+                </ul>
+            </div>
+
+            <div class="module">
+                <h3>UI组件（ui/）</h3>
+                <p>提供用户界面组件支持：</p>
+                <ul>
+                    <li><strong>UIComponent类</strong> - UI组件基类，继承自GameObject并实现事件监听，支持焦点、悬停状态管理。</li>
+                    <li><strong>Button类</strong> - 基础按钮组件，支持点击事件、状态变化（正常、悬停、按下）和样式自定义。</li>
+                </ul>
+            </div>
+
+            <div class="module">
+                <h3>声音管理（sound/）</h3>
+                <p><strong>SoundManager类</strong> - 单例模式管理所有声音资源，支持加载、播放、循环、停止声音，以及设置主音量。</p>
+                <p><strong>Sound类</strong> - 封装声音资源的播放控制和资源释放。</p>
+            </div>
+
+            <div class="module">
+                <h3>事件系统（events/）</h3>
+                <p>事件系统负责处理各种输入和游戏事件：</p>
+                <ul>
+                    <li>键盘事件（按键按下、释放）</li>
+                    <li>鼠标事件（点击、移动）</li>
+                    <li>窗口事件（关闭等）</li>
+                </ul>
+                <p>通过事件监听器模式，允许游戏对象订阅和处理感兴趣的事件。</p>
+            </div>
+        </section>
+
+        <section id="quick-start">
+            <h2>快速开始</h2>
+            <p>以下是使用TornadoGameEngine创建简单游戏的基本步骤：</p>
+
+            <h3>1. 创建游戏类</h3>
+            <div class="code-block">
+<pre>import net.pandaorg.tornadoengine.core.Game;
+import net.pandaorg.tornadoengine.graphics.Renderer;
+
+public class MyGame extends Game {
+    public MyGame(int width, int height, String title) {
+        super(width, height, title);
+    }
+
+    @Override
+    public void init() {
+        // 初始化游戏资源、添加游戏对象等
+    }
+
+    @Override
+    public void render(Renderer renderer) {
+        // 渲染游戏内容
+        renderer.clear(Color.BLACK);
+        // 绘制游戏对象
+    }
+
+    public static void main(String[] args) {
+        MyGame game = new MyGame(800, 600, "我的游戏");
+        game.start();
+    }
+}</pre>
+            </div>
+
+            <h3>2. 创建游戏对象</h3>
+            <div class="code-block">
+<pre>import net.pandaorg.tornadoengine.core.GameObject;
+import net.pandaorg.tornadoengine.graphics.Renderer;
+import java.awt.Color;
+
+public class Player extends GameObject {
+    public Player(float x, float y, float width, float height) {
+        super(x, y, width, height);
+    }
+
+    @Override
+    public void render(Renderer renderer) {
+        // 绘制玩家
+        renderer.fillRect(x, y, width, height, Color.RED);
+    }
+
+    @Override
+    public void update(float deltaTime) {
+        // 更新玩家状态，如移动等
+    }
+}</pre>
+            </div>
+
+            <h3>3. 在游戏中使用对象</h3>
+            <div class="code-block">
+<pre>@Override
+public void init() {
+    // 创建玩家对象并添加到游戏中
+    Player player = new Player(100, 100, 50, 50);
+    addGameObject(player);
+}</pre>
+            </div>
+        </section>
+
+        <section id="security">
+            <h2>安全策略</h2>
+            
+            <h3>支持的版本</h3>
+            <p>以下版本目前支持安全更新：</p>
+            <table class="security-table">
+                <tr>
+                    <th>版本</th>
+                    <th>支持状态</th>
+                </tr>
+                <tr>
+                    <td>5.1.x</td>
+                    <td>✓ 支持</td>
+                </tr>
+                <tr>
+                    <td>5.0.x</td>
+                    <td>✗ 不支持</td>
+                </tr>
+                <tr>
+                    <td>4.0.x</td>
+                    <td>✓ 支持</td>
+                </tr>
+                <tr>
+                    <td>&lt; 4.0</td>
+                    <td>✗ 不支持</td>
+                </tr>
+            </table>
+
+            <h3>报告漏洞</h3>
+            <p>如发现任何安全漏洞，请按照以下步骤报告：</p>
+            <ol>
+                <li>通过项目的issue跟踪系统提交漏洞报告</li>
+                <li>详细描述漏洞情况，包括：
+                    <ul>
+                        <li>受影响的版本</li>
+                        <li>漏洞的具体表现</li>
+                        <li>复现步骤</li>
+                        <li>可能的解决方案（如已知）</li>
+                    </ul>
+                </li>
+            </ol>
+            <p>提交后，您可以期望在7个工作日内收到初步回复。如果漏洞被接受，我们会提供修复时间表；如果被拒绝，我们会说明原因。</p>
+        </section>
+
+        <section id="dev-env">
+            <h2>开发环境</h2>
+            <h3>IDE配置</h3>
+            <p>项目默认配置为使用IntelliJ IDEA，相关配置文件位于<code>.idea/</code>目录下。</p>
+            
+            <h3>JDK版本</h3>
+            <p>项目使用JDK 21，在<code>.idea/misc.xml</code>中配置：</p>
+            <div class="code-block">
+<pre>&lt;component name="ProjectRootManager" version="2" languageLevel="JDK_21" 
+            default="true" project-jdk-name="21" project-jdk-type="JavaSDK"&gt;</pre>
+            </div>
+            
+            <h3>版本控制</h3>
+            <p>项目使用Git进行版本控制，配置文件为<code>.idea/vcs.xml</code>：</p>
+            <div class="code-block">
+<pre>&lt;mapping directory="$PROJECT_DIR$" vcs="Git" /&gt;</pre>
+            </div>
+            
+            <h3>忽略文件</h3>
+            <p><code>.gitignore</code>文件定义了版本控制中需要忽略的文件和目录，包括：</p>
+            <ul>
+                <li>IntelliJ IDEA、Eclipse、NetBeans等IDE的配置文件</li>
+                <li>编译输出目录</li>
+                <li>Mac OS的.DS_Store文件</li>
+                <li>VS Code的配置目录</li>
+            </ul>
+        </section>
+    </div>
+
+    <footer>
+        <p>TornadoGameEngine 文档 - 轻量级Java 2D游戏引擎</p>
+    </footer>
+</body>
+</html>
